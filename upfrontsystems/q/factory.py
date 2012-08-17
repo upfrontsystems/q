@@ -3,5 +3,6 @@ from rq import Queue
 
 
 def get_q(q_name):
-    q = Queue(connection=Redis())
-    q.enqueue(deliver, entry)
+    connection = Redis()
+    q = Queue(name=q_name, connection=connection)
+    return q
