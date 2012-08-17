@@ -16,7 +16,7 @@ setup(name='upfrontsystems.q',
       keywords='',
       author='Upfront Systems',
       author_email='rijk@upfrontsystems.co.za',
-      url='http://svn.plone.org/svn/collective/',
+      url='git@github.com:upfrontsystems/q.git',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['upfrontsystems'],
@@ -24,9 +24,14 @@ setup(name='upfrontsystems.q',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'pyga',
+          'redis',
+          'rq',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
       # -*- Entry points: -*-
+      [console_scripts]
+      processqueue=upfrontsystems.q.scripts.queueprocessor:processqueue
       """,
       )
