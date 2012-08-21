@@ -2,8 +2,6 @@ import sys
 import logbook
 from logbook import handlers
 
-from pyga.requests import Tracker, Page, Session, Visitor
-
 from redis import Redis
 from redis.exceptions import ConnectionError
 
@@ -34,20 +32,15 @@ def processqueue():
     setup_redis(args)
     try:
         queues = map(Queue, args.queues)
-        w = Worker(queues, name=args.name)
-        w.work(burst=args.burst)
+        worker_name = Worker.redis_worker_namespace_prefix + args.name
+        worker = Worker.find_by_key(worker_name)
+        if worker:
+            # get the stale worker to stop in order to start a new one
+            print 'Stopping stale worker.'
+            worker.register_death() 
+        else:
+            worker = Worker(queues, name=args.name)
+        worker.work(burst=args.burst)
     except ConnectionError as e:
         print(e)
         sys.exit(1)
-
-
-def deliver(entry):
-    # make the call to google analytics
-    tracker = Tracker(entry['gacode'], entry['domain'])
-    visitor = Visitor()
-    visitor.ip_address = entry['ip_address'] 
-    session = Session()
-    # drop the science or maths from the path
-    path_elements = ('',) + entry['path'][2:]
-    page = Page('/'.join(path_elements))
-    tracker.track_pageview(page, session, visitor)
