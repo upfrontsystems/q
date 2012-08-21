@@ -27,11 +27,14 @@ setup(name='upfrontsystems.q',
           'pyga',
           'redis',
           'rq',
+          'rq-dashboard',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
       processqueue=upfrontsystems.q.scripts.queueprocessor:processqueue
+      rqinfo=upfrontsystems.q.scripts.rqinfo:main
+      rqdashboard=rq_dashboard.scripts.rq_dashboard:main
       """,
       )
