@@ -30,6 +30,14 @@ setup(name='upfrontsystems.q',
           'rq-dashboard',
           # -*- Extra requirements: -*-
       ],
+      tests_require=[
+          'mock_http',
+      ],
+      extras_require={
+          'test': [
+              'mock_http',
+          ],
+      },
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
